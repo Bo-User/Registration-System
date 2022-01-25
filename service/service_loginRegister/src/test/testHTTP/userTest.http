@@ -1,0 +1,28 @@
+POST http://localhost:8082/api/users
+content-type:application/json
+Accept: application/json
+
+{
+  "userId": "ShaoCHi",
+  "name": "ShenTao",
+  "password": "123456",
+  "phoneNumber": "13558545064",
+  "openId": "1215"
+}
+
+###
+
+POST localhost:8082/api/users/session
+content-type:application/json
+Accept: application/json
+
+{
+  "email": "1215",
+  "password": "123456"
+}
+
+###
+
+GET localhost:8082/api/msm/send/1809817487@qq.com
+content-type:application/json
+Accept: application/json
