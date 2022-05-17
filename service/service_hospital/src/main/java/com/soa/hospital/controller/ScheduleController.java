@@ -164,7 +164,7 @@ public class ScheduleController {
             //不是空的
             int number=Integer.parseInt(numberStr);
             if(number>=1){
-                redisTemplate.opsForValue().set("schedule-"+String.valueOf(scheduleId),String.valueOf(number-1),10, TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set("schedule-"+String.valueOf(scheduleId),String.valueOf(number-1),100, TimeUnit.SECONDS);
                 schedule = scheduleService.getSchedule(scheduleId);
                 if(schedule==null)
                     return Result.wrapErrorResult("error");
@@ -181,7 +181,7 @@ public class ScheduleController {
                 return Result.wrapErrorResult("error1");
             if(schedule.getAvailableNumber()<1)
                 return Result.wrapErrorResult("error2");
-            redisTemplate.opsForValue().set("schedule-"+String.valueOf(scheduleId),String.valueOf(schedule.getAvailableNumber()-1),10, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set("schedule-"+String.valueOf(scheduleId),String.valueOf(schedule.getAvailableNumber()-1),100, TimeUnit.SECONDS);
         }
 
         Result patientResult = patientFeignClient.getPatientInfo(patientId);
@@ -219,11 +219,7 @@ public class ScheduleController {
         reservation.setScheduleID(String.valueOf(scheduleId));
         System.out.println(reservation);
 
-        //schedule数量减去1
-        schedule.setAvailableNumber(schedule.getAvailableNumber()-1);
-        scheduleService.update(schedule);
-
-        // mq保存订单
+        // mq发送订单
         rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_RESERVATION, MqConst.ROUTING_RESERVATION, reservation);
 
         return Result.wrapSuccessfulResult("success");

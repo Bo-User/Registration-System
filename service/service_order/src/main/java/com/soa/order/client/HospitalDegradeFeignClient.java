@@ -23,4 +23,14 @@ public class HospitalDegradeFeignClient implements HospitalFeignClient {
         return Result.wrapErrorResult("error");
     }
 
+    @Override
+    public Result<ScheduleVo> getScheduleVo(int scheduleId) {
+        return Result.wrapErrorResult("error");
+    }
+
+    @Override
+    public Result updateSchedule(ScheduleVo scheduleVo) {
+        return Result.wrapErrorResult("error");
+    }
+
 }
